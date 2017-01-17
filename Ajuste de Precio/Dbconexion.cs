@@ -19,13 +19,15 @@ namespace Ajuste_de_Precio
             textBox1.Text = Globals.Host;
             textBox2.Text = Globals.DB;
         }
-
+        //Boton aceptar para validar datos de conexion
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
+                //IP y nombre de la base de datos introducida por el usuario
                 Globals.Host = textBox1.Text;
                 Globals.DB = textBox2.Text;
+                //Informacion del usuario para conectarse a la base de datos
                 Globals.usuario = "Iياجا餐ر爪福غOاب戎ム博ر爪格";
                 Globals.pass = "manuganu.15";
                 try
@@ -34,7 +36,7 @@ namespace Ajuste_de_Precio
                     string connectionString = @"Host=" + Globals.Host + ";port=" + Globals.port + ";Database=" + Globals.DB + ";User ID=" + Globals.usuario + ";Password=" + Globals.pass + ";";
 
                     NpgsqlConnection conn = new NpgsqlConnection(connectionString);
-
+                    //Prueba de conexion a la base de datos
                     conn.Open();
 
                     conn.Close();
@@ -45,11 +47,13 @@ namespace Ajuste_de_Precio
                 }
                 catch (Exception)
                 {
+                    //Mensaje de error de conexion
                     MessageBox.Show("Se produjo un error al conectarse a la base de datos con esta informacion", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception)
             {
+                //Mensaje de error validando campos vacios
                 MessageBox.Show("Revise que todos los campos tenga informacion", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 

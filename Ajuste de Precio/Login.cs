@@ -18,32 +18,34 @@ namespace Ajuste_de_Precio
             
             InitializeComponent();
         }
-
+        //Boton para iniciar la sesion
         private void button1_Click(object sender, EventArgs e)
         {
+            //Validacion que el campo de usuario y password no esten vacios
             if (textBox1.Text != "" && textBox2.Text != "")
             {
                 try
                 {
+                    //String de conexion a la base de datos
                     string connectionString = @"Host=" + Globals.Host + ";port=" + Globals.port + ";Database=" + Globals.DB + ";User ID=" + Globals.usuario + ";Password=" + Globals.pass + ";";
                     string sql;
                     string userId = textBox1.Text;
                     string psw = textBox2.Text;
                     object count = null;
-
+                    //Encriptacion de la contraseña
                     String txtxor = xorMsg(psw);
                     psw = Base64Encode(txtxor);
+                    //Instancia de la conexion
                     NpgsqlConnection conn = new NpgsqlConnection(connectionString);
 
                     conn.Open();
-
+                    //Consulta para verificar existencia del usuario
                     sql = @"SELECT COUNT(*) FROM admin.cfg_usu WHERE codigo='" + userId + "' AND pwd ='" + psw + "'";
 
                     NpgsqlCommand dbcmd = new NpgsqlCommand(sql, conn);
-
-                    // Execute the query and obtain the value of the first column of the first row
+                    //Ejecutar consulta
                     count = dbcmd.ExecuteScalar();
-
+                    //Si el usuario existe
                     if (count.ToString() == "1")
                     {
                      
@@ -52,6 +54,7 @@ namespace Ajuste_de_Precio
                     }
                     else
                     {
+                        //Mensaje de error en caso que el usuario no exista
                         MessageBox.Show("Combinacion de Usuario y contraseña no es la correcta", "Atencion");
                     }
                 }
@@ -62,6 +65,7 @@ namespace Ajuste_de_Precio
 
             }
         }
+        //Encriptacion usada para el login
         private static string xorMsg(string Msg)
         {
             try
@@ -77,26 +81,28 @@ namespace Ajuste_de_Precio
                 for (int i = 0; i < ml; i++)
                 {
                     newmsg[i] = (char)(msg[i] ^ keys[i % kl]);
-                }//for i
+                }
                 msg = null; keys = null;
                 return new String(newmsg);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return null;
             }
         }
+        //Encripcion base 64
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
+        //Desencripcion base 64
         public static string Base64Decode(string base64EncodedData)
         {
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
-
+        //Boton de base de datos
         private void button2_Click(object sender, EventArgs e)
         {
             Dbconexion conn = new Dbconexion();

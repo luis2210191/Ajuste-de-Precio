@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ajuste_de_Precio
 {
+    //Clase de variables globales
     public static class Globals
     {
         public static String usuario = "";
